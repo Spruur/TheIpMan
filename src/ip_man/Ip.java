@@ -6,7 +6,7 @@ import java.util.Collections;
 public class Ip {
     public String address;
     public String subnetMask;
-    public String subnetPerfix;
+    public String subnetPrefix;
     public String binaryAddress;
     public String binarySubnetMask;
     public String networkAddress;
@@ -40,7 +40,7 @@ public class Ip {
         subnetMask = value;
     }
     protected void setSubnetPerfix(String value) {
-        subnetPerfix = value;
+        subnetPrefix = value;
     }
     protected void setBinaryAddress(String value) {
         binaryAddress = value;

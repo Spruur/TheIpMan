@@ -11,11 +11,15 @@ IN PROGRESS.. More to come soon
 # TODO
 * CLI
     * IP main class
-        * IP
-        * Binary
-        * Subnet
-        * Network
-        * Subnet perfix
+        * <s>IP</s>
+        * <s>Binary</s>
+        * <s>Subnet</s>
+        * <s>Network</s>
+        * <s>Subnet prefix</s>
+        * Binary to IP
+        * <s>IP to Binary</s>
+        * Subnet prefix to binary
+        * Getting string representations
 * Subnet binary
     * Functions
         * Finding network
