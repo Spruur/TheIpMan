@@ -6,19 +6,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main { //extends Application {
 
-    @Override
+   /* @Override  NEEDED FOR GUI PART
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../ip_man/test.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-    }
+    }*/
 
 
     public static void main(String[] args) {
-        System.out.println("Asdasd");
-        launch(args);
+
+        Ip.ipToBinary("1.1.1.1");
+
+
+
+
+        //launch(args); NEEDED FOR GUI PART
     }
 }
