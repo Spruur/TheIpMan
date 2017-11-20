@@ -1,5 +1,7 @@
 package ip_man;
 
+import com.sun.deploy.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -63,24 +65,27 @@ public class Ip {
         binaryNetworkAddress = value;
     }
 
-    protected void addressToBinary() {
+    private void addressToBinary() {
         setBinaryAddress(ipToBinary(address));
     }
 
-    protected void subnetMaskToBinary() {
+    private void subnetMaskToBinary() {
         setBinarySubnetMask(ipToBinary(subnetMask));
     }
 
+
+
+
     protected static String ipToBinary(String addr) {
-        String binary = "";
+        StringBuilder binary = new StringBuilder();
         String[] chunks = addr.split("\\.");
         for (String chunk: chunks) {
-            String newChunk = Integer.toBinaryString(Integer.parseInt(chunk));
-            String zeros = String.join("", Collections.nCopies(8-newChunk.length(), "0"));
-            binary = new StringBuilder(binary).append(zeros).append(newChunk).toString(); // TODO there is better way to do this without StringBuilder
+            String binaryChunk = Integer.toBinaryString(Integer.parseInt(chunk));
+            String zeros = String.join("", Collections.nCopies(8-binaryChunk.length(), "0"));
+            binary.append(zeros).append(binaryChunk);
         }
 
-        return binary;
+        return binary.toString();
     }
 
     protected static String binaryToIp(String binary) {
@@ -90,8 +95,17 @@ public class Ip {
         return addr.toString();
     }
 
+    protected static String prefixToBinary(String prefix) {
+        StringBuilder binary = new StringBuilder().append(String.join("", Collections.nCopies(Integer.parseInt(prefix), "1"))); // Appending right amount of ON bits
+        binary.append(String.join("", Collections.nCopies(32 - Integer.parseInt(prefix), "0"))); // Appending right amount of OFF bits
+        return binary.toString();
+    }
+
+    protected static int binaryToPrefix(String binary) {
+        return binary.replaceAll("0", "").length();
+    }
+
     protected static boolean isValidAddress(String addr) {
-        // System.out.println(addr);
         // Does IP have only "." and integers in it
         for (int i = 0; i<addr.length(); i++) {
             if (addr.charAt(i) != '.') {
@@ -104,20 +118,13 @@ public class Ip {
         
         // Generating chunks
         String[] chunks = addr.split("\\.");
-        //System.out.println(Arrays.toString(chunks));
         
         // Is there 4 chunks
-        if (chunks.length != 4) {
-            //System.out.println("Amount of CHUNKS");
-            return false;
-        }
+        if (chunks.length != 4) return false;
 
         // Checking chunk length
         for (String chunk: chunks) {
-            if (chunk.length() == 0 || chunk.length() > 3) {
-                //System.out.println("Chunk length");
-                return false;
-            }
+            if (chunk.length() == 0 || chunk.length() > 3) return false;
         }
 
         // If everything was OK then return TRUE
