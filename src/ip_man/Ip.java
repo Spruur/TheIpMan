@@ -3,6 +3,14 @@ package ip_man;
 import java.util.Arrays;
 import java.util.Collections;
 
+
+/**
+ * The Ip Man
+ * Ip class that offers basic Ip characteristics.
+ *
+ * @author Karl Hendrik Leppmets
+ * @version 0.0.1
+ */
 public class Ip {
     public String address;
     public String subnetMask;
@@ -55,7 +63,7 @@ public class Ip {
         binaryNetworkAddress = value;
     }
 
-    protected  void addressToBinary() {
+    protected void addressToBinary() {
         setBinaryAddress(ipToBinary(address));
     }
 
@@ -69,10 +77,17 @@ public class Ip {
         for (String chunk: chunks) {
             String newChunk = Integer.toBinaryString(Integer.parseInt(chunk));
             String zeros = String.join("", Collections.nCopies(8-newChunk.length(), "0"));
-            binary = new StringBuilder(binary).append(zeros).append(newChunk).toString();
+            binary = new StringBuilder(binary).append(zeros).append(newChunk).toString(); // TODO there is better way to do this without StringBuilder
         }
 
         return binary;
+    }
+
+    protected static String binaryToIp(String binary) {
+        StringBuilder addr = new StringBuilder();
+        String[] chunks = binary.split("(?<=\\G.{8})");
+        for (int i = 0; i < 4; i++) addr.append(Integer.parseInt(chunks[i], 2)).append(i < 3 ? "." : "");
+        return addr.toString();
     }
 
     protected static boolean isValidAddress(String addr) {
