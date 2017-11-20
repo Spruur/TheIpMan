@@ -21,11 +21,13 @@ IN PROGRESS.. More to come soon
         * <s>Subnet prefix to binary</s>
         * Constructor logic
         * Getting string representations
-* Subnet binary
-    * Functions
+    * Subnet binary Functions
         * Finding network
         * Finding amount of hosts
         * Finding first and last usable IP
         * Finding brodcast addr
+        
+* GUI
+    * TODO!!!
     
     
