@@ -26,11 +26,27 @@ IN PROGRESS.. More to come soon
     * Subnet binary Functions
         * Finding amount of hosts
         * Finding first and last usable IP
-        * Finding brodcast addr
+        * Finding broadcast addr
         
 * GUI
-    * TODO!!!
-    
+    * <s>Basic design</s>
+    * Input fields
+        * IP address
+        * Subnet
+    * Submitting
+        * Submit button
+        * Enter press
+    * Output data
+        * Display subnet variations
+        * Display IP variations
+        * Display Network info
+            * Network basic info
+                * Network addr
+                * Broadcast addr
+            * Amount of IP addresses
+            * Amount of host addresses
+            * First and last host
+            
     
     
 * More
