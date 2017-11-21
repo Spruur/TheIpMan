@@ -34,6 +34,10 @@ public class Ip {
             addressFromBinary();
         }
 
+        if (subnet.length() == 0) {
+            subnet = "24";
+        }
+
         if (subnet.length() <=3) {
             setSubnetPrefix(Integer.parseInt(subnet));
             subnetFromPrefix();
@@ -79,6 +83,13 @@ public class Ip {
         binaryNetworkAddress = value;
     }
 
+    public String getAddress() { return address; }
+    public String getSubnetMask() { return subnetMask; }
+    public int getSubnetPrefix() { return subnetPrefix; }
+    public String getBinaryAddress() { return binaryAddress; }
+    public String getBinarySubnetMask() { return binarySubnetMask; }
+    public String getNetworkAddress() { return networkAddress; }
+    public String getBinaryNetworkAddress() {return binaryNetworkAddress; }
 
 
     // Private methods
