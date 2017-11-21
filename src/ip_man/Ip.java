@@ -14,57 +14,73 @@ import java.util.Collections;
  * @version 0.0.1
  */
 public class Ip {
-    public String address;
-    public String subnetMask;
-    public String subnetPrefix;
-    public String binaryAddress;
-    public String binarySubnetMask;
-    public String networkAddress;
-    public String binaryNetworkAddress;
+    private String address;
+    private String subnetMask;
+    private int subnetPrefix;
+    private String binaryAddress;
+    private String binarySubnetMask;
+    private String networkAddress;
+    private String binaryNetworkAddress;
 
     public Ip(String addr, String subnet) {
-        // TODO Need to find out if ip is in binary or not.
+        if (addr.length() < 32) {
+            if (isValidAddress(addr)) {
+                setAddress(addr);
+                addressToBinary();
+            }
+        }
+        else {
+            setBinaryAddress(addr);
+            addressFromBinary();
+        }
 
-        // TODO Need to find out if subnet is in binary or as perfix or as dotted decimal.
+        if (subnet.length() <=3) {
+            setSubnetPrefix(Integer.parseInt(subnet));
+            subnetFromPrefix();
+        }
+        else if (subnet.length() < 32) {
+            setSubnetMask(subnet);
+            subnetMaskToBinary();
+            setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+        }
+        else {
+            setBinarySubnetMask(subnet);
+            setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+            subnetMaskFromBinary();
+        }
 
-        // TODO conversions from binary to IP or opposite
 
-        if (isValidAddress(addr)) setAddress(addr);
+        // TODO find network address
 
-
-        /*if (isValidSubnet(subnet)) {
-            subnetMask = subnet;
-            //return true;
-        }*/
-
-        // TODO Finish Constructor
-
-
-        // TOASK What do I have to return to make it clear that constructing was unsuccessful?
+        // TODO network address to binary
     }
 
-    protected void setAddress(String value) {
+    // SET methods
+    private void setAddress(String value) {
         address = value;
     }
-    protected void setSubnetMask(String value) {
+    private void setSubnetMask(String value) {
         subnetMask = value;
     }
-    protected void setSubnetPerfix(String value) {
+    private void setSubnetPrefix(int value) {
         subnetPrefix = value;
     }
-    protected void setBinaryAddress(String value) {
+    private void setBinaryAddress(String value) {
         binaryAddress = value;
     }
-    protected void setBinarySubnetMask(String value) {
+    private void setBinarySubnetMask(String value) {
         binarySubnetMask = value;
     }
-    protected void setNetworkAddress(String value) {
+    private void setNetworkAddress(String value) {
         networkAddress = value;
     }
-    protected void setBinaryNetworkAddress(String value) {
+    private void setBinaryNetworkAddress(String value) {
         binaryNetworkAddress = value;
     }
 
+
+
+    // Private methods
     private void addressToBinary() {
         setBinaryAddress(ipToBinary(address));
     }
@@ -73,10 +89,21 @@ public class Ip {
         setBinarySubnetMask(ipToBinary(subnetMask));
     }
 
+    private void addressFromBinary() { setAddress(binaryToIp(binaryAddress)); }
+
+    private void subnetMaskFromBinary() {
+        setSubnetMask(binaryToIp(binarySubnetMask));
+    }
+
+    private void subnetFromPrefix() {
+        setBinarySubnetMask(prefixToBinary(subnetPrefix));
+        subnetMaskFromBinary();
+    }
 
 
+    // Public methods
 
-    protected static String ipToBinary(String addr) {
+    public static String ipToBinary(String addr) {
         StringBuilder binary = new StringBuilder();
         String[] chunks = addr.split("\\.");
         for (String chunk: chunks) {
@@ -88,24 +115,24 @@ public class Ip {
         return binary.toString();
     }
 
-    protected static String binaryToIp(String binary) {
+    public static String binaryToIp(String binary) {
         StringBuilder addr = new StringBuilder();
         String[] chunks = binary.split("(?<=\\G.{8})");
         for (int i = 0; i < 4; i++) addr.append(Integer.parseInt(chunks[i], 2)).append(i < 3 ? "." : "");
         return addr.toString();
     }
 
-    protected static String prefixToBinary(String prefix) {
-        StringBuilder binary = new StringBuilder().append(String.join("", Collections.nCopies(Integer.parseInt(prefix), "1"))); // Appending right amount of ON bits
-        binary.append(String.join("", Collections.nCopies(32 - Integer.parseInt(prefix), "0"))); // Appending right amount of OFF bits
+    public static String prefixToBinary(int prefix) {
+        StringBuilder binary = new StringBuilder().append(String.join("", Collections.nCopies(prefix, "1"))); // Appending right amount of ON bits
+        binary.append(String.join("", Collections.nCopies(32 - prefix, "0"))); // Appending right amount of OFF bits
         return binary.toString();
     }
 
-    protected static int binaryToPrefix(String binary) {
+    public static int binaryToPrefix(String binary) {
         return binary.replaceAll("0", "").length();
     }
 
-    protected static boolean isValidAddress(String addr) {
+    public static boolean isValidAddress(String addr) {
         // Does IP have only "." and integers in it
         for (int i = 0; i<addr.length(); i++) {
             if (addr.charAt(i) != '.') {
@@ -131,7 +158,7 @@ public class Ip {
         return true;
     }
 
-    protected static boolean isValidSubnet(String addr) {
+    public static boolean isValidSubnet(String addr, String subnet) {
         // TODO functionality
         return true;
     }
