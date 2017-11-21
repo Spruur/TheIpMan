@@ -19,11 +19,11 @@ IN PROGRESS.. More to come soon
         * <s>Binary to IP</s>
         * <s>IP to Binary</s>
         * <s>Subnet prefix to binary</s>
-        * Network calculation
-        * Constructor logic
+        * <s>Network calculation</s>
+        * <s>Constructor logic</s>
         * Getting string representations
     * Subnet binary Functions
-        * Finding network
+        * <s>Finding network</s>
         * Finding amount of hosts
         * Finding first and last usable IP
         * Finding brodcast addr

@@ -46,7 +46,7 @@ public class Main { //extends Application implements EventHandler<ActionEvent> {
     public static void main(String[] args) {
 
 
-
+        Ip.anding("11111100111111011000011110001111", "11111111111111110000000000000000");
         //System.out.println(Ip.binaryToPrefix("11111111111111110000000000000000"));
         //System.out.println(Ip.binaryToPrefix("11111111111111111111000000000000"));
         //System.out.println(Ip.binaryToIp("11111100111111011000011110001111"));

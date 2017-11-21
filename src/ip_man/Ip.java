@@ -39,9 +39,11 @@ public class Ip {
             subnetFromPrefix();
         }
         else if (subnet.length() < 32) {
-            setSubnetMask(subnet);
-            subnetMaskToBinary();
-            setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+            if (isValidAddress(subnet)) {
+                setSubnetMask(subnet);
+                subnetMaskToBinary();
+                setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+            }
         }
         else {
             setBinarySubnetMask(subnet);
@@ -50,9 +52,8 @@ public class Ip {
         }
 
 
-        // TODO find network address
+        toNetworkAddress();
 
-        // TODO network address to binary
     }
 
     // SET methods
@@ -98,6 +99,11 @@ public class Ip {
     private void subnetFromPrefix() {
         setBinarySubnetMask(prefixToBinary(subnetPrefix));
         subnetMaskFromBinary();
+    }
+
+    private void toNetworkAddress() {
+        setBinaryNetworkAddress(anding(binaryAddress, binarySubnetMask));
+        setNetworkAddress(binaryToIp(binaryNetworkAddress));
     }
 
 
@@ -158,8 +164,13 @@ public class Ip {
         return true;
     }
 
-    public static boolean isValidSubnet(String addr, String subnet) {
-        // TODO functionality
-        return true;
+
+
+    public static String anding(String binary1, String binary2) {
+        StringBuilder binary = new StringBuilder();
+        for (int i = 0; i < 32; i++) {
+            binary.append(binary1.charAt(i) == binary2.charAt(i) && binary1.charAt(i) == '1' ? 1 : 0);
+        }
+        return binary.toString();
     }
 }
