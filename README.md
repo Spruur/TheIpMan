@@ -19,6 +19,7 @@ IN PROGRESS.. More to come soon
         * <s>Binary to IP</s>
         * <s>IP to Binary</s>
         * <s>Subnet prefix to binary</s>
+        * Network calculation
         * Constructor logic
         * Getting string representations
     * Subnet binary Functions
