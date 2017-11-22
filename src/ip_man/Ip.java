@@ -169,6 +169,7 @@ public class Ip {
         // Checking chunk length
         for (String chunk: chunks) {
             if (chunk.length() == 0 || chunk.length() > 3) return false;
+            if (Integer.parseInt(chunk) >= 0 && Integer.parseInt(chunk) <= 255) return false;
         }
 
         // If everything was OK then return TRUE

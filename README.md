@@ -54,3 +54,9 @@ IN PROGRESS.. More to come soon
     * Code comments
     
     
+
+
+# Changelog
+Starting from 0.0.2
+
+[NEW] Ip address validation - Address chunk must be 0-255
