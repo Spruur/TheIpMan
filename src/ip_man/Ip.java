@@ -11,7 +11,7 @@ import java.util.Collections;
  * Ip class that offers basic Ip characteristics.
  *
  * @author Karl Hendrik Leppmets
- * @version 0.0.1
+ * @version 0.0.2
  */
 public class Ip {
     private String address;
@@ -38,21 +38,26 @@ public class Ip {
             subnet = "24";
         }
 
-        if (subnet.length() <=3) {
+        if (isValidSubnetPrefix(Integer.parseInt(subnet))) {
             setSubnetPrefix(Integer.parseInt(subnet));
             subnetFromPrefix();
         }
-        else if (subnet.length() < 32) {
-            if (isValidAddress(subnet)) {
+        else if (isValidSubnet(subnet)) {
+            if (isValidSubnet(subnet)) {
                 setSubnetMask(subnet);
                 subnetMaskToBinary();
                 setSubnetPrefix(binaryToPrefix(binarySubnetMask));
             }
         }
-        else {
+        else if (isValidSubnetBinary(ipToBinary(subnet))) {
             setBinarySubnetMask(subnet);
             setSubnetPrefix(binaryToPrefix(binarySubnetMask));
             subnetMaskFromBinary();
+        }
+        else {
+            subnet = "24";
+            setSubnetPrefix(Integer.parseInt(subnet));
+            subnetFromPrefix();
         }
 
 
@@ -174,6 +179,27 @@ public class Ip {
 
         // If everything was OK then return TRUE
         return true;
+    }
+
+    public static boolean isValidSubnet(String addr) {
+        return  isValidAddress(addr) && isValidSubnetBinary(ipToBinary(addr));
+
+       /* String binaryAddr = ipToBinary(addr);
+
+        return isValidSubnetBinary(binaryAddr);*/
+    }
+
+    public static boolean isValidSubnetBinary(String binaryAddr) {
+        boolean subnet = false;
+        for (int i=0; i<32; i++) {
+            if (!subnet && binaryAddr.charAt(i) == '0') subnet = true;
+            else if (subnet && binaryAddr.charAt(i) == '1') return false;
+        }
+        return true;
+    }
+
+    public static boolean isValidSubnetPrefix(int prefix) {
+        return prefix >= 16 && prefix <=32;
     }
 
 
