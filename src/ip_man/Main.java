@@ -122,18 +122,22 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         ipField.setPromptText("Enter ip");
         grid.add(ipField, 1, 1);
 
-        Button btn = new Button("Calculate");
+        Button submitButton = new Button("Calculate");
         //HBox hbBtn = new HBox(10);
         //hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         //hbBtn.getChildren().add(btn);
-        grid.add(btn, 2, 1);
+        grid.add(submitButton, 2, 1);
+
+        /*Button submitButton = new Button("Calculate");
+        submitButton.setPrefSize(100, 20);
+        grid.getChildren().add(submitButton, );*/
 
         // labelAddress in column 2, row 1
         Text labelAddress = new Text("Ip address: ");
         labelAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelAddress, 1, 3);
 
-        Text contentAddress = new Text("192.168.2.1");
+        Text contentAddress = new Text();
         contentAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentAddress, 2, 3);
 
@@ -141,7 +145,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelSubnet.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelSubnet, 1, 4);
 
-        Text contentSubnet = new Text("255.255.255.0");
+        Text contentSubnet = new Text();
         contentSubnet.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentSubnet, 2, 4);
 
@@ -149,11 +153,20 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelNetwork.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelNetwork, 1, 5);
 
-        Text contentNetwork = new Text("192.168.2.0");
+        Text contentNetwork = new Text();
         contentNetwork.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentNetwork, 2, 5);
 
-
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                //System.out.println(ipField.getText());
+                Ip ip = new Ip(ipField.getText(), "24");
+                contentAddress.setText(ip.getAddress());
+                contentSubnet.setText(ip.getSubnetMask());
+                contentNetwork.setText(ip.getNetworkAddress());
+            }
+        });
 
         return grid;
     }
