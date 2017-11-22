@@ -30,18 +30,18 @@ IN PROGRESS.. More to come soon
         
 * GUI
     * <s>Basic design</s>
-    * Input fields
-        * IP address
-        * Subnet
+    * <s>Input fields</s>
+        * <s>IP address</s>
+        * <s>Subnet</s>
     * Submitting
-        * Submit button
+        * <s>Submit button</s>
         * Enter press
     * Output data
         * Display subnet variations
         * Display IP variations
         * Display Network info
             * Network basic info
-                * Network addr
+                * <s>Network addr</s>
                 * Broadcast addr
             * Amount of IP addresses
             * Amount of host addresses
