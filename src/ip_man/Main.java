@@ -6,67 +6,49 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.ImageView;
+
 
 public class Main extends Application implements EventHandler<ActionEvent> {
+    private String window = "calculator";
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("The Ip Man");
+        primaryStage.setTitle("The IP Man - IP subnetter and calculator");
+        BorderPane border = new BorderPane();
+        HBox hbox = addMenu(border);
+        border.setTop(hbox);
 
-        GridPane grid = new GridPane();
-        //grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+        switch (window) {
+            case "calculator":
+                border.setCenter(addCalculatorContent());
+                break;
 
-        Text sceneTitle = new Text("The IP Man - IP subnetter and calculator");
-        sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(sceneTitle, 0, 0, 2, 1);
+            case "subnetter":
+                border.setCenter(addSubnetterContent());
+                break;
+        }
+        //border.setRight(addSideMenu());
 
-        Label addressFieldLabel = new Label("Enter IP address");
-        grid.add(addressFieldLabel, 0,  1);
-
-        TextField addressFieldText = new TextField();
-        grid.add(addressFieldText, 1, 1);
-
-
-        Button btn = new Button("Calculate");
-        HBox hbBtn = new HBox(10);
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 2, 1);
-
-
-        final Text contentText = new Text();
-        grid.add(contentText, 1, 6);
-
-
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                contentText.setFill(Color.FIREBRICK);
-                contentText.setText("Button pressed");
-            }
-        });
+        
 
 
 
-        Scene scene = new Scene(grid, 1000, 800);
+        Scene scene = new Scene(border, 1000, 800);
         primaryStage.setScene(scene);
 
         scene.getStylesheets().add(Main.class.getResource("main.css").toExternalForm());
@@ -81,30 +63,125 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         primaryStage.show();
     }
 
-    @Override
-    public void handle(ActionEvent event) {
+    public HBox addMenu(BorderPane border) {
+        HBox hbox = new HBox();
+        hbox.setPadding(new Insets(15, 12, 15, 12));
+        hbox.setSpacing(10);
+        hbox.setStyle("-fx-background-color: #336699;");
 
+        Button menuButtonCalculator = new Button("Calculator");
+        menuButtonCalculator.setPrefSize(100, 20);
+
+        Button menuButtonSubnetter = new Button("Subnetter");
+        menuButtonSubnetter.setPrefSize(100, 20);
+        hbox.getChildren().addAll(menuButtonCalculator, menuButtonSubnetter);
+
+        menuButtonCalculator.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                border.setCenter(addCalculatorContent());
+            }
+        });
+
+        menuButtonSubnetter.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                border.setCenter(addSubnetterContent());
+            }
+        });
+        
+        return hbox;
+    }
+
+
+    public GridPane addSubnetterContent() {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(0, 10, 0, 10));
+
+        // heading in column 2, row 1
+        Text heading = new Text("Subnetter");
+        heading.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        grid.add(heading, 1, 0);
+
+        return grid;
+    }
+
+    public GridPane addCalculatorContent() {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(0, 10, 0, 10));
+
+        Text heading = new Text("Calculator");
+        heading.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        grid.add(heading, 1, 0);
+
+        TextField ipField = new TextField();
+        ipField.setPromptText("Enter ip");
+        grid.add(ipField, 1, 1);
+
+        Button btn = new Button("Calculate");
+        //HBox hbBtn = new HBox(10);
+        //hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        //hbBtn.getChildren().add(btn);
+        grid.add(btn, 2, 1);
+
+        // labelAddress in column 2, row 1
+        Text labelAddress = new Text("Ip address: ");
+        labelAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelAddress, 1, 3);
+
+        Text contentAddress = new Text("192.168.2.1");
+        contentAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentAddress, 2, 3);
+
+        Text labelSubnet = new Text("Subnet mask: ");
+        labelSubnet.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelSubnet, 1, 4);
+
+        Text contentSubnet = new Text("255.255.255.0");
+        contentSubnet.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentSubnet, 2, 4);
+
+        Text labelNetwork = new Text("Network address: ");
+        labelNetwork.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelNetwork, 1, 5);
+
+        Text contentNetwork = new Text("192.168.2.0");
+        contentNetwork.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentNetwork, 2, 5);
+
+
+
+        return grid;
+    }
+
+    public FlowPane addSideMenu() {
+        FlowPane flow = new FlowPane();
+        flow.setPadding(new Insets(5, 0, 5, 0));
+        flow.setVgap(4);
+        flow.setHgap(4);
+        flow.setPrefWrapLength(170);
+        flow.setStyle("-fx-background-color: DAE6F3;");
+
+        return flow;
+    }
+
+
+    @Override
+    public void handle(ActionEvent e) {
+        //contentText.setFill(Color.FIREBRICK);
+        //contentText.setText("Button pressed");
+
+        // TODO is valid IP?
+
+
+        //System.out.println(addressFieldText.getText());
     }
 
     public static void main(String[] args) {
-
-        //Ip ip = new Ip("192.168.1.1", "11111111111111111111111100000000");
-
-        /*System.out.println(ip.getAddress());
-        System.out.println(ip.getSubnetMask());
-        System.out.println(ip.getBinaryAddress());
-        System.out.println(ip.getBinarySubnetMask());
-        System.out.println(ip.getNetworkAddress());
-        System.out.println(ip.getBinaryNetworkAddress());*/
-        //Ip.anding("11111100111111011000011110001111", "11111111111111110000000000000000");
-        //System.out.println(Ip.binaryToPrefix("11111111111111110000000000000000"));
-        //System.out.println(Ip.binaryToPrefix("11111111111111111111000000000000"));
-        //System.out.println(Ip.binaryToIp("11111100111111011000011110001111"));
-        //Ip.ipToBinary("1.1.1.1");
-
-
-
-
         launch(args); //NEEDED FOR GUI PART
     }
 }
