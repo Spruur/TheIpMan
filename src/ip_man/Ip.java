@@ -21,6 +21,10 @@ public class Ip {
     private String binarySubnetMask;
     private String networkAddress;
     private String binaryNetworkAddress;
+    private int amountOfAddresses;
+    private int amountOfUsableAddresses;
+    private int amountOfSubnets;
+    private String broadcastAddress;
 
     public Ip(String addr, String subnet) {
         if (addr.length() < 32) {
@@ -62,6 +66,9 @@ public class Ip {
 
 
         toNetworkAddress();
+        setAmountOfAddresses(getAmountOfIps(getSubnetPrefix()));
+        setAmountOfUsableAddresses(getAmountOfHosts(getSubnetPrefix()));
+        setAmountOfSubnets(getAmountOfPrefixSubnets(getSubnetPrefix()));
 
     }
 
@@ -87,6 +94,10 @@ public class Ip {
     private void setBinaryNetworkAddress(String value) {
         binaryNetworkAddress = value;
     }
+    private void setAmountOfAddresses(int value) { amountOfAddresses = value; }
+    private void setAmountOfUsableAddresses(int value) { amountOfUsableAddresses = value; }
+    private void setAmountOfSubnets(int value) { amountOfSubnets = value; }
+    private void setBroadcastAddress(String value) { broadcastAddress = value; }
 
     public String getAddress() { return address; }
     public String getSubnetMask() { return subnetMask; }
@@ -94,8 +105,11 @@ public class Ip {
     public String getBinaryAddress() { return binaryAddress; }
     public String getBinarySubnetMask() { return binarySubnetMask; }
     public String getNetworkAddress() { return networkAddress; }
-    public String getBinaryNetworkAddress() {return binaryNetworkAddress; }
-
+    public String getBinaryNetworkAddress() { return binaryNetworkAddress; }
+    public int getAmountOfAddresses() { return amountOfAddresses; }
+    public int getAmountOfUsableAddresses() { return amountOfUsableAddresses; }
+    public int getAmountOfSubnets() { return amountOfSubnets; }
+    public String getBroadcastAddress() { return broadcastAddress; }
 
     // Private methods
     private void addressToBinary() {
@@ -151,7 +165,7 @@ public class Ip {
     }
 
     public static int binaryToPrefix(String binary) {
-        return binary.replaceAll("0", "").length();
+        return (isValidSubnetBinary(binary) ? binary.replaceAll("0", "").length() : 0);
     }
 
     public static boolean isValidAddress(String addr) {
@@ -202,13 +216,25 @@ public class Ip {
         return prefix >= 16 && prefix <=32;
     }
 
-
-
     public static String anding(String binary1, String binary2) {
         StringBuilder binary = new StringBuilder();
         for (int i = 0; i < 32; i++) {
             binary.append(binary1.charAt(i) == binary2.charAt(i) && binary1.charAt(i) == '1' ? 1 : 0);
         }
         return binary.toString();
+    }
+
+    public static int getAmountOfIps(int prefix) {
+
+        return (int)java.lang.Math.pow(2, 32-prefix);
+    }
+
+    public static int getAmountOfHosts(int prefix) {
+        return getAmountOfIps(prefix) - 2;
+    }
+
+    public static int getAmountOfPrefixSubnets(int prefix) {
+        // TODO
+        return 0;
     }
 }

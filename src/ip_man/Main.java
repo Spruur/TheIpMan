@@ -206,5 +206,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent e) {}
 
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+        launch(args);
+        //Ip ip = new Ip("192.168.2.1", "23");
+        //System.out.println(ip.getAmountOfSubnets());
+    }
 }
