@@ -128,6 +128,11 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
         Button submitButton = new Button("Calculate");
         grid.add(submitButton, 3, 1);
+
+        Text contentError = new Text();
+        contentError.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        contentError.setId("errormsg");
+        grid.add(contentError, 4, 1);
         
         
         
@@ -175,16 +180,93 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         contentNetworkBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentNetworkBinary, 3, 5);
 
+
+
+        Text labelBroadcast = new Text("Broadcast address: ");
+        labelBroadcast.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelBroadcast, 1, 6);
+
+        Text contentBroadcast = new Text();
+        contentBroadcast.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentBroadcast, 2, 6);
+
+        Text contentBroadcastBinary = new Text();
+        contentBroadcastBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentBroadcastBinary, 3, 6);
+        
+
+
+
+        Text labelFirstAddress = new Text("First host: ");
+        labelFirstAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelFirstAddress, 1, 7);
+
+        Text contentFirstAddress = new Text();
+        contentFirstAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentFirstAddress, 2, 7);
+
+        Text contentFirstAddressBinary = new Text();
+        contentFirstAddressBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentFirstAddressBinary, 3, 7);
+
+
+
+
+        Text labelLastAddress = new Text("Last host: ");
+        labelLastAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelLastAddress, 1, 8);
+
+        Text contentLastAddress = new Text();
+        contentLastAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentLastAddress, 2, 8);
+
+        Text contentLastAddressBinary = new Text();
+        contentLastAddressBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentLastAddressBinary, 3, 8);
+
+
+
+        
+        Text labelHosts = new Text("Hosts: ");
+        labelHosts.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        grid.add(labelHosts, 1, 9);
+
+        Text contentHosts = new Text();
+        contentHosts.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentHosts, 2, 9);
+
+        Text contentNetType = new Text();
+        contentNetType.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        grid.add(contentNetType, 3, 9);
+        
+
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                Ip ip = new Ip(ipField.getText(), subnetField.getText());
-                contentAddress.setText(ip.getAddress());
-                contentSubnet.setText(ip.getSubnetMask());
-                contentNetwork.setText(ip.getNetworkAddress());
-                contentAddressBinary.setText(ip.getBinaryAddress());
-                contentSubnetBinary.setText(ip.getBinarySubnetMask());
-                contentNetworkBinary.setText(ip.getBinaryNetworkAddress());
+                String address = ipField.getText();
+                String subnet = subnetField.getText();
+
+                if (Ip.isValidAddress(address)) {
+                    if (subnet.length() == 0 || subnet.length() == 32 || Ip.isValidSubnet(subnet) || Ip.isValidSubnetPrefix(Integer.parseInt(subnet))) {
+                        Ip ip = new Ip(address, subnet);
+                        contentAddress.setText(ip.getAddress());
+                        contentSubnet.setText(ip.getSubnetMask());
+                        contentNetwork.setText(ip.getNetworkAddress());
+                        contentAddressBinary.setText(ip.getBinaryAddress());
+                        contentSubnetBinary.setText(ip.getBinarySubnetMask());
+                        contentNetworkBinary.setText(ip.getBinaryNetworkAddress());
+
+
+                        contentHosts.setText(String.valueOf(ip.getAmountOfUsableAddresses()));
+                        contentError.setText("");
+                    }
+                    else {
+                        contentError.setText("Entered subnet is not valid!");
+                    }
+                }
+                else {
+                    contentError.setText("Entered IP is not valid!");
+                }
             }
         });
 
@@ -208,7 +290,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
     public static void main(String[] args) {
         launch(args);
-        //Ip ip = new Ip("192.168.2.1", "23");
-        //System.out.println(ip.getAmountOfSubnets());
+        //p ip = new Ip("192.168.2.1", "255.255.255.0");
+        //System.out.println(ip.getNetworkAddress());
+        //System.out.println(ip.getBinaryNetworkAddress());
+
     }
 }
