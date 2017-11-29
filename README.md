@@ -25,7 +25,6 @@ IN PROGRESS.. More to come soon
         * <s>Finding network</s>
     * Subnet binary Functions
         * <s>Finding amount of hosts</s>
-        * Finding amount of subnets
         * Finding first and last usable IP
         * Finding broadcast addr
         
@@ -45,7 +44,7 @@ IN PROGRESS.. More to come soon
                 * <s>Network addr</s>
                 * Broadcast addr
             * Amount of IP addresses
-            * Amount of host addresses
+            * <s>Amount of host addresses</s>
             * First and last host
             
     
@@ -53,6 +52,7 @@ IN PROGRESS.. More to come soon
 * More
     * Method comments
     * Code comments
+    * Clean up code
     
     
 
