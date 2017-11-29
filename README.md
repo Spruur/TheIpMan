@@ -65,3 +65,4 @@ IN PROGRESS.. More to come soon
 * [NEW] Amount of ip's, subnets, hosts setters and getters (23/11/2017)
 * [NEW] Method to calculate ip addresses in subnet (23/11/2017)
 * [NEW] Method to calculate amount of hosts in subnet (23/11/2017)
+* [CHANGE] Fixed subnet checking logig in Ip constructor (29/11/2017)
