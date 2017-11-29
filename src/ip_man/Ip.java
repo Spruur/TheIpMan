@@ -1,6 +1,7 @@
 package ip_man;
 
 import com.sun.deploy.util.StringUtils;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class Ip {
     private String binaryNetworkAddress;
     private int amountOfAddresses;
     private int amountOfUsableAddresses;
-    private int amountOfSubnets;
+    //private int amountOfSubnets;
     private String broadcastAddress;
 
     public Ip(String addr, String subnet) {
@@ -42,33 +43,40 @@ public class Ip {
             subnet = "24";
         }
 
-        if (isValidSubnetPrefix(Integer.parseInt(subnet))) {
-            setSubnetPrefix(Integer.parseInt(subnet));
-            subnetFromPrefix();
-        }
-        else if (isValidSubnet(subnet)) {
-            if (isValidSubnet(subnet)) {
-                setSubnetMask(subnet);
-                subnetMaskToBinary();
-                setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+        if (subnet.length() < 3) {
+            if (isValidSubnetPrefix(Integer.parseInt(subnet))) {
+                setSubnetPrefix(Integer.parseInt(subnet));
+                subnetFromPrefix();
             }
         }
-        else if (isValidSubnetBinary(ipToBinary(subnet))) {
-            setBinarySubnetMask(subnet);
-            setSubnetPrefix(binaryToPrefix(binarySubnetMask));
-            subnetMaskFromBinary();
-        }
         else {
-            subnet = "24";
-            setSubnetPrefix(Integer.parseInt(subnet));
-            subnetFromPrefix();
+            if (subnet.length() < 32) {
+                if (isValidSubnet(subnet)) {
+                    setSubnetMask(subnet);
+                    subnetMaskToBinary();
+                    setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+                }
+            }
+            else {
+                if (subnet.length() == 32) {
+                    if (isValidSubnetBinary(subnet)) {
+                        setBinarySubnetMask(subnet);
+                        setSubnetPrefix(binaryToPrefix(binarySubnetMask));
+                        subnetMaskFromBinary();
+                    }
+                }
+                else {
+                    subnet = "24";
+                    setSubnetPrefix(Integer.parseInt(subnet));
+                    subnetFromPrefix();
+                }
+            }
         }
-
 
         toNetworkAddress();
         setAmountOfAddresses(getAmountOfIps(getSubnetPrefix()));
         setAmountOfUsableAddresses(getAmountOfHosts(getSubnetPrefix()));
-        setAmountOfSubnets(getAmountOfPrefixSubnets(getSubnetPrefix()));
+        //setAmountOfSubnets(getAmountOfPrefixSubnets(getSubnetPrefix()));
 
     }
 
@@ -96,19 +104,66 @@ public class Ip {
     }
     private void setAmountOfAddresses(int value) { amountOfAddresses = value; }
     private void setAmountOfUsableAddresses(int value) { amountOfUsableAddresses = value; }
-    private void setAmountOfSubnets(int value) { amountOfSubnets = value; }
     private void setBroadcastAddress(String value) { broadcastAddress = value; }
 
+    /**
+     * Gets the IP address
+     * @return String IP address
+     */
     public String getAddress() { return address; }
+
+    /**
+     * Gets subnet mask
+     * @return String Subnet mask
+     */
     public String getSubnetMask() { return subnetMask; }
+
+    /**
+     * Gets subnet mask prefix
+     * @return int Subnet mask prefix
+     */
     public int getSubnetPrefix() { return subnetPrefix; }
+
+    /**
+     * Gets IP address in binary
+     * @return String IP address in binary
+     */
     public String getBinaryAddress() { return binaryAddress; }
+
+    /**
+     * Gets subnet mask in binary
+     * @return String Subnet mask in binary
+     */
     public String getBinarySubnetMask() { return binarySubnetMask; }
+
+    /**
+     * Gets network address
+     * @return String Network address
+     */
     public String getNetworkAddress() { return networkAddress; }
+
+    /**
+     * Gets network address in binary
+     * @return String network address in binary
+     */
     public String getBinaryNetworkAddress() { return binaryNetworkAddress; }
+
+    /**
+     * Gets the amount of addresses
+     * @return int Amount of addresses
+     */
     public int getAmountOfAddresses() { return amountOfAddresses; }
+
+    /**
+     * Gets amount of hosts
+     * @return int Amount of hosts
+     */
     public int getAmountOfUsableAddresses() { return amountOfUsableAddresses; }
-    public int getAmountOfSubnets() { return amountOfSubnets; }
+
+    /**
+     * Gets the broadcast address
+     * @return String Broadcast address
+     */
     public String getBroadcastAddress() { return broadcastAddress; }
 
     // Private methods
@@ -204,6 +259,7 @@ public class Ip {
     }
 
     public static boolean isValidSubnetBinary(String binaryAddr) {
+        if (binaryAddr.length() != 32) return false;
         boolean subnet = false;
         for (int i=0; i<32; i++) {
             if (!subnet && binaryAddr.charAt(i) == '0') subnet = true;
@@ -213,7 +269,7 @@ public class Ip {
     }
 
     public static boolean isValidSubnetPrefix(int prefix) {
-        return prefix >= 16 && prefix <=32;
+        return prefix >= 8 && prefix <=32;
     }
 
     public static String anding(String binary1, String binary2) {
@@ -230,11 +286,14 @@ public class Ip {
     }
 
     public static int getAmountOfHosts(int prefix) {
-        return getAmountOfIps(prefix) - 2;
+        return (isValidSubnetPrefix(prefix) && prefix < 31 ? getAmountOfIps(prefix) - 2 : (prefix == 31 ? 0 : 1));
     }
 
-    public static int getAmountOfPrefixSubnets(int prefix) {
-        // TODO
-        return 0;
+    public static String getBroadcast(String network, String subnet) {
+        int prefix = binaryToPrefix(ipToBinary(subnet));
+
+
+        return null;
     }
+
 }
