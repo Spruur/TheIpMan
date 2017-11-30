@@ -243,7 +243,7 @@ public class Ip {
         // Checking chunk length
         for (String chunk: chunks) {
             if (chunk.length() == 0 || chunk.length() > 3) return false;
-            if (Integer.parseInt(chunk) < 0 && Integer.parseInt(chunk) > 255) return false;
+            if (Integer.parseInt(chunk) < 0 || Integer.parseInt(chunk) > 255) return false;
         }
 
         // If everything was OK then return TRUE
@@ -252,10 +252,6 @@ public class Ip {
 
     public static boolean isValidSubnet(String addr) {
         return  isValidAddress(addr) && isValidSubnetBinary(ipToBinary(addr));
-
-       /* String binaryAddr = ipToBinary(addr);
-
-        return isValidSubnetBinary(binaryAddr);*/
     }
 
     public static boolean isValidSubnetBinary(String binaryAddr) {
