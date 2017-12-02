@@ -58,9 +58,8 @@ IN PROGRESS.. More to come soon
 
 
 # Changelog
-### 0.0.3
-* [NEW VERSION] Version 0.0.2 to 0.0.3
 ### 0.0.2
+* [NEW VERSION] Version 0.0.2 to 0.0.3
 * [NEW] Added first and last address calculation and displaying in GUI (03/12/2017)
 * [NEW] Added broadcast address calculation (02/12/2017)
 * [NEW] Submit on ENTER (02/12/2017)
