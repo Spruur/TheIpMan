@@ -12,7 +12,7 @@ import java.util.Collections;
  * Ip class that offers basic Ip characteristics.
  *
  * @author Karl Hendrik Leppmets
- * @version 0.0.2
+ * @version 0.0.3
  */
 public class Ip {
     private String address;
