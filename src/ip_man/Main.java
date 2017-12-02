@@ -21,8 +21,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.ImageView;
-
 
 public class Main extends Application implements EventHandler<ActionEvent> {
     private String window = "calculator";
@@ -247,7 +245,8 @@ public class Main extends Application implements EventHandler<ActionEvent> {
                 String subnet = subnetField.getText();
 
                 if (Ip.isValidAddress(address)) {
-                    if (subnet.length() == 0 || subnet.length() == 32 || Ip.isValidSubnet(subnet) || Ip.isValidSubnetPrefix(Integer.parseInt(subnet))) {
+                    // This long subnet check is must be. This because entered subnet can be as IP address, as prefix or as binary.
+                    if (subnet.length() == 0 || subnet.length() == 32 || Ip.isValidAddress(subnet) || Ip.isValidSubnet(subnet) || (subnet.matches("[-+]?\\d*\\.?\\d+") && Ip.isValidSubnetPrefix(Integer.parseInt(subnet)))) {
                         Ip ip = new Ip(address, subnet);
                         contentAddress.setText(ip.getAddress());
                         contentSubnet.setText(ip.getSubnetMask());
