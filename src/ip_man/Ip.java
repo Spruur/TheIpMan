@@ -26,6 +26,7 @@ public class Ip {
     private int amountOfUsableAddresses;
     //private int amountOfSubnets;
     private String broadcastAddress;
+    private String binaryBroadcastAddress;
 
     public Ip(String addr, String subnet) {
         if (addr.length() < 32) {
@@ -78,6 +79,8 @@ public class Ip {
         setAmountOfUsableAddresses(getAmountOfHosts(getSubnetPrefix()));
         //setAmountOfSubnets(getAmountOfPrefixSubnets(getSubnetPrefix()));
 
+        toBroadcast();
+
     }
 
     // SET methods
@@ -105,6 +108,7 @@ public class Ip {
     private void setAmountOfAddresses(int value) { amountOfAddresses = value; }
     private void setAmountOfUsableAddresses(int value) { amountOfUsableAddresses = value; }
     private void setBroadcastAddress(String value) { broadcastAddress = value; }
+    private void setBinaryBroadcastAddress(String value) { binaryBroadcastAddress = value; }
 
     /**
      * Gets the IP address
@@ -166,6 +170,12 @@ public class Ip {
      */
     public String getBroadcastAddress() { return broadcastAddress; }
 
+    /**
+     * Gets the broadcast address in binary
+     * @return String Broadcast address in binary
+     */
+    public String getBinaryBroadcastAddress() { return binaryBroadcastAddress; }
+
     // Private methods
     private void addressToBinary() {
         setBinaryAddress(ipToBinary(address));
@@ -190,6 +200,19 @@ public class Ip {
         setBinaryNetworkAddress(anding(binaryAddress, binarySubnetMask));
         setNetworkAddress(binaryToIp(binaryNetworkAddress));
     }
+
+    private void toBroadcast() {
+        // Create broadcast binary
+        StringBuilder broadcastInBinary = new StringBuilder(binaryNetworkAddress);
+        for (int i = 1; i <= 32-subnetPrefix ; i++) {
+            broadcastInBinary.setCharAt(32-i, '1');
+        }
+
+        setBinaryBroadcastAddress(broadcastInBinary.toString());
+        setBroadcastAddress(binaryToIp(binaryBroadcastAddress));
+    }
+
+    private void to
 
 
     // Public methods
@@ -291,5 +314,6 @@ public class Ip {
 
         return null;
     }
+
 
 }

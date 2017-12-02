@@ -293,6 +293,8 @@ public class Main extends Application implements EventHandler<ActionEvent> {
                 contentAddressBinary.setText(ip.getBinaryAddress());
                 contentSubnetBinary.setText(ip.getBinarySubnetMask());
                 contentNetworkBinary.setText(ip.getBinaryNetworkAddress());
+                contentBroadcastBinary.setText(ip.getBinaryBroadcastAddress());
+                contentBroadcast.setText(ip.getBroadcastAddress());
 
 
                 contentHosts.setText(String.valueOf(ip.getAmountOfUsableAddresses()));

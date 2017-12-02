@@ -26,7 +26,7 @@ IN PROGRESS.. More to come soon
     * Subnet binary Functions
         * <s>Finding amount of hosts</s>
         * Finding first and last usable IP
-        * Finding broadcast addr
+        * <s>Finding broadcast addr</s>
         
 * GUI
     * <s>Basic design</s>
@@ -40,9 +40,9 @@ IN PROGRESS.. More to come soon
         * Display subnet variations
         * Display IP variations
         * Display Network info
-            * Network basic info
+            * <s>Network basic info</s>
                 * <s>Network addr</s>
-                * Broadcast addr
+                * <s>Broadcast addr</s>
             * Amount of IP addresses
             * <s>Amount of host addresses</s>
             * First and last host
@@ -59,6 +59,7 @@ IN PROGRESS.. More to come soon
 
 # Changelog
 ### 0.0.2
+* [NEW] Added broadcast address calculation (01/12/2017)
 * [NEW] Submit on ENTER (01/12/2017)
 * [CHANGE] Fixed subnet checking logic on submit (01/12/2017)
 * [CHANGE] Fixed subnet checking logic in Ip constructor (29/11/2017)
