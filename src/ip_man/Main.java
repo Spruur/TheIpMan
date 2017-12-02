@@ -10,6 +10,8 @@ import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -24,6 +26,24 @@ import javafx.stage.Stage;
 
 public class Main extends Application implements EventHandler<ActionEvent> {
     private String window = "calculator";
+    private TextField ipField = new TextField();
+    private TextField subnetField = new TextField();
+    private Button submitButton = new Button("Calculate");
+    private Text contentError = new Text();
+    private Text contentAddress = new Text();
+    private Text contentAddressBinary = new Text();
+    private Text contentSubnet = new Text();
+    private Text contentSubnetBinary = new Text();
+    private Text contentNetwork = new Text();
+    private Text contentNetworkBinary = new Text();
+    private Text contentBroadcast = new Text();
+    private Text contentBroadcastBinary = new Text();
+    private Text contentFirstAddress = new Text();
+    private Text contentFirstAddressBinary = new Text();
+    private Text contentLastAddress = new Text();
+    private Text contentLastAddressBinary = new Text();
+    private Text contentHosts = new Text();
+    private Text contentNetType = new Text();
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("The IP Man - IP subnetter and calculator");
@@ -54,7 +74,11 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 
 
-
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+            if(key.getCode()== KeyCode.ENTER) {
+                handleSubmit();
+            }
+        });
 
 
 
@@ -116,18 +140,14 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         heading.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         grid.add(heading, 1, 0);
 
-        TextField ipField = new TextField();
         ipField.setPromptText("Enter ip (192.168.1.1)");
         grid.add(ipField, 1, 1);
 
-        TextField subnetField = new TextField();
         subnetField.setPromptText("Enter subnet mask");
         grid.add(subnetField, 2, 1);
 
-        Button submitButton = new Button("Calculate");
         grid.add(submitButton, 3, 1);
 
-        Text contentError = new Text();
         contentError.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         contentError.setId("errormsg");
         grid.add(contentError, 4, 1);
@@ -139,11 +159,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelAddress, 1, 3);
 
-        Text contentAddress = new Text();
         contentAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentAddress, 2, 3);
 
-        Text contentAddressBinary = new Text();
         contentAddressBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentAddressBinary, 3, 3);
         
@@ -154,11 +172,10 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelSubnet.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelSubnet, 1, 4);
 
-        Text contentSubnet = new Text();
         contentSubnet.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentSubnet, 2, 4);
 
-        Text contentSubnetBinary = new Text();
+
         contentSubnetBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentSubnetBinary, 3, 4);
         
@@ -170,11 +187,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelNetwork.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelNetwork, 1, 5);
 
-        Text contentNetwork = new Text();
         contentNetwork.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentNetwork, 2, 5);
 
-        Text contentNetworkBinary = new Text();
         contentNetworkBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentNetworkBinary, 3, 5);
 
@@ -184,11 +199,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelBroadcast.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelBroadcast, 1, 6);
 
-        Text contentBroadcast = new Text();
         contentBroadcast.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentBroadcast, 2, 6);
 
-        Text contentBroadcastBinary = new Text();
         contentBroadcastBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentBroadcastBinary, 3, 6);
         
@@ -199,11 +212,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelFirstAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelFirstAddress, 1, 7);
 
-        Text contentFirstAddress = new Text();
         contentFirstAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentFirstAddress, 2, 7);
 
-        Text contentFirstAddressBinary = new Text();
         contentFirstAddressBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentFirstAddressBinary, 3, 7);
 
@@ -214,11 +225,10 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelLastAddress.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelLastAddress, 1, 8);
 
-        Text contentLastAddress = new Text();
         contentLastAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentLastAddress, 2, 8);
 
-        Text contentLastAddressBinary = new Text();
+
         contentLastAddressBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentLastAddressBinary, 3, 8);
 
@@ -229,11 +239,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         labelHosts.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         grid.add(labelHosts, 1, 9);
 
-        Text contentHosts = new Text();
         contentHosts.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentHosts, 2, 9);
 
-        Text contentNetType = new Text();
         contentNetType.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentNetType, 3, 9);
         
@@ -241,31 +249,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                String address = ipField.getText();
-                String subnet = subnetField.getText();
-
-                if (Ip.isValidAddress(address)) {
-                    // This long subnet check is must be. This because entered subnet can be as IP address, as prefix or as binary.
-                    if (subnet.length() == 0 || subnet.length() == 32 || Ip.isValidAddress(subnet) || Ip.isValidSubnet(subnet) || (subnet.matches("[-+]?\\d*\\.?\\d+") && Ip.isValidSubnetPrefix(Integer.parseInt(subnet)))) {
-                        Ip ip = new Ip(address, subnet);
-                        contentAddress.setText(ip.getAddress());
-                        contentSubnet.setText(ip.getSubnetMask());
-                        contentNetwork.setText(ip.getNetworkAddress());
-                        contentAddressBinary.setText(ip.getBinaryAddress());
-                        contentSubnetBinary.setText(ip.getBinarySubnetMask());
-                        contentNetworkBinary.setText(ip.getBinaryNetworkAddress());
-
-
-                        contentHosts.setText(String.valueOf(ip.getAmountOfUsableAddresses()));
-                        contentError.setText("");
-                    }
-                    else {
-                        contentError.setText("Entered subnet is not valid!");
-                    }
-                }
-                else {
-                    contentError.setText("Entered IP is not valid!");
-                }
+                handleSubmit();
             }
         });
 
@@ -293,5 +277,33 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         //System.out.println(ip.getNetworkAddress());
         //System.out.println(ip.getBinaryNetworkAddress());
 
+    }
+
+    private void handleSubmit() {
+        String address = ipField.getText();
+        String subnet = subnetField.getText();
+
+        if (Ip.isValidAddress(address)) {
+            // This long subnet check is must be. This because entered subnet can be as IP address, as prefix or as binary.
+            if (subnet.length() == 0 || subnet.length() == 32 || Ip.isValidAddress(subnet) || Ip.isValidSubnet(subnet) || (subnet.matches("[-+]?\\d*\\.?\\d+") && Ip.isValidSubnetPrefix(Integer.parseInt(subnet)))) {
+                Ip ip = new Ip(address, subnet);
+                contentAddress.setText(ip.getAddress());
+                contentSubnet.setText(ip.getSubnetMask());
+                contentNetwork.setText(ip.getNetworkAddress());
+                contentAddressBinary.setText(ip.getBinaryAddress());
+                contentSubnetBinary.setText(ip.getBinarySubnetMask());
+                contentNetworkBinary.setText(ip.getBinaryNetworkAddress());
+
+
+                contentHosts.setText(String.valueOf(ip.getAmountOfUsableAddresses()));
+                contentError.setText("");
+            }
+            else {
+                contentError.setText("Entered subnet is not valid!");
+            }
+        }
+        else {
+            contentError.setText("Entered IP is not valid!");
+        }
     }
 }

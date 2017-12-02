@@ -33,9 +33,9 @@ IN PROGRESS.. More to come soon
     * <s>Input fields</s>
         * <s>IP address</s>
         * <s>Subnet</s>
-    * Submitting
+    * <s>Submitting</s>
         * <s>Submit button</s>
-        * Enter press
+        * <s>Enter press</s>
     * Output data
         * Display subnet variations
         * Display IP variations
@@ -59,10 +59,16 @@ IN PROGRESS.. More to come soon
 
 # Changelog
 ### 0.0.2
-* [NEW] Ip address validation - Address chunk must be 0-255 (22/11/2017)
-* [NEW] Subnet mask validation - Several checks to be sure that subnet mask is valid(22/11/2017)
-* [CHANGE] Added binary subnet mask check to binary to prefix method (23/11/2017) 
-* [NEW] Amount of ip's, subnets, hosts setters and getters (23/11/2017)
-* [NEW] Method to calculate ip addresses in subnet (23/11/2017)
+* [NEW] Submit on ENTER (01/12/2017)
+* [CHANGE] Fixed subnet checking logic on submit (01/12/2017)
+* [CHANGE] Fixed subnet checking logic in Ip constructor (29/11/2017)
 * [NEW] Method to calculate amount of hosts in subnet (23/11/2017)
-* [CHANGE] Fixed subnet checking logig in Ip constructor (29/11/2017)
+* [NEW] Method to calculate ip addresses in subnet (23/11/2017)
+* [NEW] Amount of ip's, subnets, hosts setters and getters (23/11/2017)
+* [CHANGE] Added binary subnet mask check to binary to prefix method (23/11/2017) 
+* [NEW] Subnet mask validation - Several checks to be sure that subnet mask is valid(22/11/2017)
+* [NEW] Ip address validation - Address chunk must be 0-255 (22/11/2017)
+
+
+
+
