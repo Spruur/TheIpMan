@@ -12,7 +12,7 @@ import java.util.Collections;
  * Ip class that offers basic Ip characteristics.
  *
  * @author Karl Hendrik Leppmets
- * @version 0.0.2
+ * @version 0.0.3
  */
 public class Ip {
     private String address;
@@ -24,9 +24,12 @@ public class Ip {
     private String binaryNetworkAddress;
     private int amountOfAddresses;
     private int amountOfUsableAddresses;
-    //private int amountOfSubnets;
     private String broadcastAddress;
     private String binaryBroadcastAddress;
+    private String firstHostAddress;
+    private String binaryFirstHostAddress;
+    private String lastHostAddress;
+    private String binaryLastHostAddress;
 
     public Ip(String addr, String subnet) {
         if (addr.length() < 32) {
@@ -80,6 +83,8 @@ public class Ip {
         //setAmountOfSubnets(getAmountOfPrefixSubnets(getSubnetPrefix()));
 
         toBroadcast();
+        toFirstAddress();
+        toLastAddress();
 
     }
 
@@ -109,6 +114,10 @@ public class Ip {
     private void setAmountOfUsableAddresses(int value) { amountOfUsableAddresses = value; }
     private void setBroadcastAddress(String value) { broadcastAddress = value; }
     private void setBinaryBroadcastAddress(String value) { binaryBroadcastAddress = value; }
+    private void setFirstHostAddress(String value) { firstHostAddress = value; }
+    private void setBinaryFirstHostAddress(String value) { binaryFirstHostAddress = value; }
+    private void setLastHostAddress(String value) { lastHostAddress = value; }
+    private void setBinaryLastHostAddress(String value) { binaryLastHostAddress = value; }
 
     /**
      * Gets the IP address
@@ -176,6 +185,32 @@ public class Ip {
      */
     public String getBinaryBroadcastAddress() { return binaryBroadcastAddress; }
 
+    /**
+     * Gets the first host address
+     * @return String First host address
+     */
+    public String getFirstHostAddress() { return firstHostAddress; }
+
+    /**
+     * Gets the first host address in binary
+     * @return String First host address in binary
+     */
+    public String getBinaryFirstHostAddress() { return binaryFirstHostAddress; }
+
+    /**
+     * Gets the last host address
+     * @return String Last host address
+     */
+    public String getLastHostAddress() { return lastHostAddress; }
+
+    /**
+     * Gets the first host address in binary
+     * @return String First host address in binary
+     */
+    public String getBinaryLastHostAddress() { return binaryLastHostAddress; }
+
+
+
     // Private methods
     private void addressToBinary() {
         setBinaryAddress(ipToBinary(address));
@@ -203,8 +238,8 @@ public class Ip {
 
     private void toBroadcast() {
         // Create broadcast binary
-        StringBuilder broadcastInBinary = new StringBuilder(binaryNetworkAddress);
-        for (int i = 1; i <= 32-subnetPrefix ; i++) {
+        StringBuilder broadcastInBinary = new StringBuilder(getBinaryNetworkAddress());
+        for (int i = 1; i <= 32-getSubnetPrefix() ; i++) {
             broadcastInBinary.setCharAt(32-i, '1');
         }
 
@@ -212,7 +247,39 @@ public class Ip {
         setBroadcastAddress(binaryToIp(binaryBroadcastAddress));
     }
 
-    private void to
+    private void toFirstAddress() {
+        String firstHostInBinary = getBinaryNetworkAddress();
+        // Get last 8 bits or less if prefix > 24
+        int subnetPart = getSubnetPrefix() > 24 ? getSubnetPrefix() : 24;
+        int lastBits = Integer.parseInt(firstHostInBinary.substring(subnetPart), 2);
+
+        lastBits++;
+
+        String lastBitsInBinary = Integer.toBinaryString(lastBits);
+
+        String zeros = String.join("", Collections.nCopies(32-subnetPart-lastBitsInBinary.length(), "0"));
+        firstHostInBinary = firstHostInBinary.substring(0, subnetPart) + zeros + lastBitsInBinary;
+
+        setBinaryFirstHostAddress(firstHostInBinary);
+        setFirstHostAddress(binaryToIp(firstHostInBinary));
+    }
+    
+    private void toLastAddress() {
+        String lastHostInBinary = getBinaryBroadcastAddress();
+        // Get last 8 bits or less if prefix > 24
+        int subnetPart = getSubnetPrefix() > 24 ? getSubnetPrefix() : 24;
+        int lastBits = Integer.parseInt(lastHostInBinary.substring(subnetPart), 2);
+
+        lastBits--;
+
+        String lastBitsInBinary = Integer.toBinaryString(lastBits);
+
+        String zeros = String.join("", Collections.nCopies(32-subnetPart-lastBitsInBinary.length(), "0"));
+        lastHostInBinary = lastHostInBinary.substring(0, subnetPart) + zeros + lastBitsInBinary;
+
+        setBinaryLastHostAddress(lastHostInBinary);
+        setLastHostAddress(binaryToIp(lastHostInBinary));
+    }
 
 
     // Public methods

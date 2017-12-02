@@ -9,8 +9,8 @@ IN PROGRESS.. More to come soon
 * Grapfic interface with magic and stuff
 
 # TODO
-* CLI
-    * IP main class
+* <s>CLI</s>
+    * <s>IP main class</s>
         * <s>IP</s>
         * <s>Binary</s>
         * <s>Subnet</s>
@@ -23,9 +23,9 @@ IN PROGRESS.. More to come soon
         * <s>Constructor logic</s>
         * <s>Getting string representations</s>
         * <s>Finding network</s>
-    * Subnet binary Functions
+    * <s>Subnet binary Functions</s>
         * <s>Finding amount of hosts</s>
-        * Finding first and last usable IP
+        * <s>Finding first and last usable IP</s>
         * <s>Finding broadcast addr</s>
         
 * GUI
@@ -43,9 +43,9 @@ IN PROGRESS.. More to come soon
             * <s>Network basic info</s>
                 * <s>Network addr</s>
                 * <s>Broadcast addr</s>
-            * Amount of IP addresses
+            * <s>Amount of IP addresses</s>
             * <s>Amount of host addresses</s>
-            * First and last host
+            * <s>First and last host</s>
             
     
     
@@ -58,9 +58,12 @@ IN PROGRESS.. More to come soon
 
 
 # Changelog
+### 0.0.3
+* [NEW VERSION] Version 0.0.2 to 0.0.3
 ### 0.0.2
-* [NEW] Added broadcast address calculation (01/12/2017)
-* [NEW] Submit on ENTER (01/12/2017)
+* [NEW] Added first and last address calculation and displaying in GUI (03/12/2017)
+* [NEW] Added broadcast address calculation (02/12/2017)
+* [NEW] Submit on ENTER (02/12/2017)
 * [CHANGE] Fixed subnet checking logic on submit (01/12/2017)
 * [CHANGE] Fixed subnet checking logic in Ip constructor (29/11/2017)
 * [NEW] Method to calculate amount of hosts in subnet (23/11/2017)
