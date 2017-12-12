@@ -1,9 +1,5 @@
 package ip_man;
 
-import com.sun.deploy.util.StringUtils;
-import org.jetbrains.annotations.Contract;
-
-import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -11,8 +7,8 @@ import java.util.Collections;
  * The Ip Man
  * Ip class that offers basic Ip characteristics.
  *
- * @author Karl Hendrik Leppmets
- * @version 0.0.3
+ * @author      Karl Hendrik Leppmets
+ * @version     0.0.3
  */
 public class Ip {
     private String address;
@@ -31,28 +27,38 @@ public class Ip {
     private String lastHostAddress;
     private String binaryLastHostAddress;
 
+    /**
+     * Ip constructor. This method calculates everything based on given address and subnet. It is expected that input is always correct.
+     * @param addr      Ip address
+     * @param subnet    Subnet mask
+     */
     public Ip(String addr, String subnet) {
+        // Is casual address
         if (addr.length() < 32) {
             if (isValidAddress(addr)) {
                 setAddress(addr);
                 addressToBinary();
             }
         }
+        // Is binary address
         else {
             setBinaryAddress(addr);
             addressFromBinary();
         }
 
+        // In case of empty subnet lets use default subnet of /24
         if (subnet.length() == 0) {
             subnet = "24";
         }
 
+        // If subnet is as prefix
         if (subnet.length() < 3) {
             if (isValidSubnetPrefix(Integer.parseInt(subnet))) {
                 setSubnetPrefix(Integer.parseInt(subnet));
                 subnetFromPrefix();
             }
         }
+        // If subnet is as address
         else {
             if (subnet.length() < 32) {
                 if (isValidSubnet(subnet)) {
@@ -61,6 +67,7 @@ public class Ip {
                     setSubnetPrefix(binaryToPrefix(binarySubnetMask));
                 }
             }
+            // If subnet is as binary
             else {
                 if (subnet.length() == 32) {
                     if (isValidSubnetBinary(subnet)) {
@@ -77,10 +84,10 @@ public class Ip {
             }
         }
 
+        // Doing additional calculations
         toNetworkAddress();
         setAmountOfAddresses(getAmountOfIps(getSubnetPrefix()));
         setAmountOfUsableAddresses(getAmountOfHosts(getSubnetPrefix()));
-        //setAmountOfSubnets(getAmountOfPrefixSubnets(getSubnetPrefix()));
 
         toBroadcast();
         toFirstAddress();
@@ -212,32 +219,53 @@ public class Ip {
 
 
     // Private methods
+
+    /**
+     * Sets ip in binary
+     */
     private void addressToBinary() {
         setBinaryAddress(ipToBinary(address));
     }
 
+    /**
+     * Sets subnet mask in binary
+     */
     private void subnetMaskToBinary() {
         setBinarySubnetMask(ipToBinary(subnetMask));
     }
 
+    /**
+     * Sets ip address from binary
+     */
     private void addressFromBinary() { setAddress(binaryToIp(binaryAddress)); }
 
+    /**
+     * Sets subnet mask from binary
+     */
     private void subnetMaskFromBinary() {
         setSubnetMask(binaryToIp(binarySubnetMask));
     }
 
+    /**
+     * Set subnet an subnet binary based on prefix
+     */
     private void subnetFromPrefix() {
         setBinarySubnetMask(prefixToBinary(subnetPrefix));
         subnetMaskFromBinary();
     }
 
+    /**
+     * Sets network address and network address in binary
+     */
     private void toNetworkAddress() {
         setBinaryNetworkAddress(anding(binaryAddress, binarySubnetMask));
         setNetworkAddress(binaryToIp(binaryNetworkAddress));
     }
 
+    /**
+     * Sets Broadcast address and broadcast address in binary
+     */
     private void toBroadcast() {
-        // Create broadcast binary
         StringBuilder broadcastInBinary = new StringBuilder(getBinaryNetworkAddress());
         for (int i = 1; i <= 32-getSubnetPrefix() ; i++) {
             broadcastInBinary.setCharAt(32-i, '1');
@@ -247,6 +275,9 @@ public class Ip {
         setBroadcastAddress(binaryToIp(binaryBroadcastAddress));
     }
 
+    /**
+     * Calculates and sets first host address
+     */
     private void toFirstAddress() {
         String firstHostInBinary = getBinaryNetworkAddress();
         // Get last 8 bits or less if prefix > 24
@@ -263,7 +294,10 @@ public class Ip {
         setBinaryFirstHostAddress(firstHostInBinary);
         setFirstHostAddress(binaryToIp(firstHostInBinary));
     }
-    
+
+    /**
+     * Calculates and sets last host address
+     */
     private void toLastAddress() {
         String lastHostInBinary = getBinaryBroadcastAddress();
         // Get last 8 bits or less if prefix > 24
@@ -284,6 +318,11 @@ public class Ip {
 
     // Public methods
 
+    /**
+     * Converts standard ip address to binary
+     * @param addr  IP address
+     * @return      Ip address in binary
+     */
     public static String ipToBinary(String addr) {
         StringBuilder binary = new StringBuilder();
         String[] chunks = addr.split("\\.");
@@ -296,6 +335,11 @@ public class Ip {
         return binary.toString();
     }
 
+    /**
+     * Converts binary to IP
+     * @param binary    IP in binary
+     * @return          IP address
+     */
     public static String binaryToIp(String binary) {
         StringBuilder addr = new StringBuilder();
         String[] chunks = binary.split("(?<=\\G.{8})");
@@ -303,16 +347,31 @@ public class Ip {
         return addr.toString();
     }
 
+    /**
+     * Converts subnet prefix to binary
+     * @param prefix    Subnet prefix as integer
+     * @return          Subnet mask in binary
+     */
     public static String prefixToBinary(int prefix) {
         StringBuilder binary = new StringBuilder().append(String.join("", Collections.nCopies(prefix, "1"))); // Appending right amount of ON bits
         binary.append(String.join("", Collections.nCopies(32 - prefix, "0"))); // Appending right amount of OFF bits
         return binary.toString();
     }
 
+    /**
+     * Converts binary to prefix
+     * @param binary    Subnet in binary
+     * @return          Subnet prefix
+     */
     public static int binaryToPrefix(String binary) {
         return (isValidSubnetBinary(binary) ? binary.replaceAll("0", "").length() : 0);
     }
 
+    /**
+     * Checks the validity of IP address
+     * @param addr  Ip address
+     * @return      Is valid or not
+     */
     public static boolean isValidAddress(String addr) {
         // Does IP have only "." and integers in it
         for (int i = 0; i<addr.length(); i++) {
@@ -340,10 +399,20 @@ public class Ip {
         return true;
     }
 
+    /**
+     * Check validity of subnet in IP format
+     * @param addr  Subnet mask
+     * @return      Is valid or not
+     */
     public static boolean isValidSubnet(String addr) {
         return  isValidAddress(addr) && isValidSubnetBinary(ipToBinary(addr));
     }
 
+    /**
+     * Checks the validity of subnet mask in binary
+     * @param binaryAddr    Subnet mask in binary
+     * @return              Is valid or not
+     */
     public static boolean isValidSubnetBinary(String binaryAddr) {
         if (binaryAddr.length() != 32) return false;
         boolean subnet = false;
@@ -354,10 +423,21 @@ public class Ip {
         return true;
     }
 
+    /**
+     * Checks validity of subnet prefix
+     * @param prefix    Subnet prefix
+     * @return          Is valid or not
+     */
     public static boolean isValidSubnetPrefix(int prefix) {
         return prefix >= 8 && prefix <=32;
     }
 
+    /**
+     * Performs classical anding of IP address and subnet mask in binary
+     * @param binary1   IP address or subnet in binary
+     * @param binary2   IP address or subnet in binary
+     * @return          Network address in binary
+     */
     public static String anding(String binary1, String binary2) {
         StringBuilder binary = new StringBuilder();
         for (int i = 0; i < 32; i++) {
@@ -366,21 +446,22 @@ public class Ip {
         return binary.toString();
     }
 
+    /**
+     * Calculates amount of ip's based on subnet prefix
+     * @param prefix    Subnet prefix
+     * @return          Amount of ip's
+     */
     public static int getAmountOfIps(int prefix) {
 
         return (int)java.lang.Math.pow(2, 32-prefix);
     }
 
+    /**
+     * Calculates amount of hosts
+     * @param prefix    Subnet prefix
+     * @return          Amount of hosts
+     */
     public static int getAmountOfHosts(int prefix) {
         return (isValidSubnetPrefix(prefix) && prefix < 31 ? getAmountOfIps(prefix) - 2 : (prefix == 31 ? 0 : 1));
     }
-
-    public static String getBroadcast(String network, String subnet) {
-        int prefix = binaryToPrefix(ipToBinary(subnet));
-
-
-        return null;
-    }
-
-
 }

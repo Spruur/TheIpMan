@@ -3,27 +3,22 @@ package ip_man;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
+/**
+ * Main class. Uses JavaFX
+ * @author      Karl Hendrik Leppmets
+ * @version     0.0.3
+ */
 public class Main extends Application implements EventHandler<ActionEvent> {
     private String window = "calculator";
     private TextField ipField = new TextField();
@@ -44,36 +39,34 @@ public class Main extends Application implements EventHandler<ActionEvent> {
     private Text contentLastAddressBinary = new Text();
     private Text contentHosts = new Text();
     private Text contentNetType = new Text();
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    /**
+     * Starts JavaFX part. Sets main settings of window
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("The IP Man - IP subnetter and calculator");
+        primaryStage.setTitle("The IP Man - IP subnetter and calculator by Karl H. Leppmets");
         BorderPane border = new BorderPane();
-        HBox hbox = addMenu(border);
-        border.setTop(hbox);
 
+        // Determine which content to display. In case I will add more content windows later
         switch (window) {
             case "calculator":
                 border.setCenter(addCalculatorContent());
                 break;
-
-            case "subnetter":
-                border.setCenter(addSubnetterContent());
-                break;
         }
+
         //border.setRight(addSideMenu());
-
-        
-
-
 
         Scene scene = new Scene(border, 1000, 800);
         primaryStage.setScene(scene);
 
         scene.getStylesheets().add(Main.class.getResource("main.css").toExternalForm());
 
-
-
-
+        // Handling key presses
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if(key.getCode()== KeyCode.ENTER) {
                 handleSubmit();
@@ -85,52 +78,11 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         primaryStage.show();
     }
 
-    public HBox addMenu(BorderPane border) {
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15, 12, 15, 12));
-        hbox.setSpacing(10);
-        hbox.setStyle("-fx-background-color: #336699;");
-
-        Button menuButtonCalculator = new Button("Calculator");
-        menuButtonCalculator.setPrefSize(100, 20);
-
-        Button menuButtonSubnetter = new Button("Subnetter");
-        menuButtonSubnetter.setPrefSize(100, 20);
-        hbox.getChildren().addAll(menuButtonCalculator, menuButtonSubnetter);
-
-        menuButtonCalculator.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                border.setCenter(addCalculatorContent());
-            }
-        });
-
-        menuButtonSubnetter.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                border.setCenter(addSubnetterContent());
-            }
-        });
-        
-        return hbox;
-    }
-
-
-    public GridPane addSubnetterContent() {
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(0, 10, 0, 10));
-
-        // heading in column 2, row 1
-        Text heading = new Text("Subnetter");
-        heading.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-        grid.add(heading, 1, 0);
-
-        return grid;
-    }
-
-    public GridPane addCalculatorContent() {
+    /**
+     * Creates content for calculator window
+     * @return  Returns content as GridPane
+     */
+    private GridPane addCalculatorContent() {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -160,6 +112,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         grid.add(labelAddress, 1, 3);
 
         contentAddress.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
+        contentAddress.setId("copyable");
         grid.add(contentAddress, 2, 3);
 
         contentAddressBinary.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
@@ -244,7 +197,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
         contentNetType.setFont(Font.font("Arial", FontWeight.NORMAL, 15));
         grid.add(contentNetType, 3, 9);
-        
+
 
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -256,29 +209,17 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         return grid;
     }
 
-    public FlowPane addSideMenu() {
-        FlowPane flow = new FlowPane();
-        flow.setPadding(new Insets(5, 0, 5, 0));
-        flow.setVgap(4);
-        flow.setHgap(4);
-        flow.setPrefWrapLength(170);
-        flow.setStyle("-fx-background-color: DAE6F3;");
 
-        return flow;
-    }
-
-
+    /**
+     * Default handle override needed by JavaFX
+     * @param e Event
+     */
     @Override
     public void handle(ActionEvent e) {}
 
-    public static void main(String[] args) {
-        launch(args);
-        //p ip = new Ip("192.168.2.1", "255.255.255.0");
-        //System.out.println(ip.getNetworkAddress());
-        //System.out.println(ip.getBinaryNetworkAddress());
-
-    }
-
+    /**
+     * Creates IP object based on input data and displays content for calculator text fields
+     */
     private void handleSubmit() {
         String address = ipField.getText();
         String subnet = subnetField.getText();
@@ -288,7 +229,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
             if (subnet.length() == 0 || subnet.length() == 32 || Ip.isValidAddress(subnet) || Ip.isValidSubnet(subnet) || (subnet.matches("[-+]?\\d*\\.?\\d+") && Ip.isValidSubnetPrefix(Integer.parseInt(subnet)))) {
                 Ip ip = new Ip(address, subnet);
                 contentAddress.setText(ip.getAddress());
-                contentSubnet.setText(ip.getSubnetMask());
+                contentSubnet.setText(ip.getSubnetMask() + "    (/" + ip.getSubnetPrefix() + ")");
                 contentNetwork.setText(ip.getNetworkAddress());
                 contentAddressBinary.setText(ip.getBinaryAddress());
                 contentSubnetBinary.setText(ip.getBinarySubnetMask());

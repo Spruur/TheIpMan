@@ -13,3 +13,14 @@
 #errormsg {
     -fx-stroke: #841111;
 }
+
+#creator {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.copyable, .copyable:focused {
+    -fx-background-color: transparent ;
+    -fx-background-insets: 0px ;
+}
