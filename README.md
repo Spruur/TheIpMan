@@ -2,11 +2,25 @@
 
 This is not legendary Wing Tsun Kung Fu master but just an IP subnetter and calculator.
 
-IN PROGRESS.. More to come soon
+## What does it do?
+It lets you to enter ip address and subnet mask and calculates basic information based on that:
+* Ip address
+* Network address
+* Subnet mask
+* Amount of hosts
+* Broadcast address
+* First host address
+* Last host address
 
-# Plan
-* CLI interface with calculation functionality
-* Grapfic interface with magic and stuff
+It even displays all this data in binary!
+
+## Can I do something else with it?
+Jep! You can just use the Ip class in your project. This hopefully saves you some time and useless fuss.
+Also feel free to extend the functionality of this app. Just mention me (with my github) as the original creator.
+
+## How to use
+Just compile and run it as your any other Java program.
+
 
 # TODO
 * <s>CLI</s>
@@ -28,7 +42,7 @@ IN PROGRESS.. More to come soon
         * <s>Finding first and last usable IP</s>
         * <s>Finding broadcast addr</s>
         
-* GUI
+* <s>GUI</s>
     * <s>Basic design</s>
     * <s>Input fields</s>
         * <s>IP address</s>
@@ -36,10 +50,8 @@ IN PROGRESS.. More to come soon
     * <s>Submitting</s>
         * <s>Submit button</s>
         * <s>Enter press</s>
-    * Output data
-        * Display subnet variations
-        * Display IP variations
-        * Display Network info
+    * <s>Output data</s>
+        * <s>Display Network info</s>
             * <s>Network basic info</s>
                 * <s>Network addr</s>
                 * <s>Broadcast addr</s>
@@ -49,16 +61,18 @@ IN PROGRESS.. More to come soon
             
     
     
-* More
-    * Method comments
-    * Code comments
-    * Clean up code
+* <s>More</s>
+    * <s>Method comments</s>
+    * <s>Code comments</s>
+    * <s>Clean up code</s>
     
     
 
 
 # Changelog
 ### 0.0.3
+* [NEW] Added javaDoc comments (12/12/2017)
+* [NEW] Code cleanup (12/12/2017)
 ### 0.0.2
 * [NEW VERSION] Version 0.0.2 to 0.0.3
 * [NEW] Added first and last address calculation and displaying in GUI (03/12/2017)
